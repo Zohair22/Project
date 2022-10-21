@@ -6,7 +6,7 @@ module.exports = {
     },
     'extends': [
         'eslint:recommended',
-        'plugin:vue/vue3-essential'
+        'plugin:vue/vue3-recommended'
     ],
     'overrides': [
     ],
@@ -26,5 +26,8 @@ module.exports = {
             'error',
             'unix'
         ],
+        'vue/order-in-components': [
+            'error'
+        ]
     }
 }
