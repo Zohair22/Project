@@ -23,7 +23,7 @@ class AdminController extends Controller
      */
     public function index(): Response
     {
-        return Inertia::render('AdminLogin');
+        return Inertia::render('Admin/AdminLogin');
     }
 
     /**

@@ -28,6 +28,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 Route::middleware(['guest:admin'])->group(function () {
     Route::prefix('/admin')->controller(AdminController::class)->group(function () {
         Route::get('/login', 'index')->name('adminLogin');
+        Route::post('/login', 'login')->name('adminLoged');
     });
 });
 
