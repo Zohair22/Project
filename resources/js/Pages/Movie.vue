@@ -12,8 +12,8 @@ defineProps([
     <AuthenticatedLayout>
         <div class="py-3">
             <div class=" max-w-5xl mx-auto">
-                <div class="flex grid grid-cols-5 p-2">
-                    <div class="col-span-1">
+                <div class="flex grid grid-cols-6 p-2">
+                    <div class="col-span-2">
                         <img :src="'/'+movie.poster" class="w-full h-full object-cover rounded-2xl shadow-xl">
                     </div>
                     <div class="col-span-4">
