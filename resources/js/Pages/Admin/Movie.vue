@@ -2,12 +2,12 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head } from '@inertiajs/inertia-vue3';
 defineProps([
-    'movie','auth'
+    'movie'
 ]);
 </script>
 
 <template>
-    <Head title="Dashboard" />
+    <Head title="AdminMovie" />
 
     <AuthenticatedLayout>
         <div class="py-3">

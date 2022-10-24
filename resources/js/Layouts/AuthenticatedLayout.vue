@@ -1,11 +1,9 @@
 <script setup>
 import { ref } from 'vue';
-import ApplicationLogo from '@/Components/ApplicationLogo.vue';
 import Dropdown from '@/Components/Dropdown.vue';
 import DropdownLink from '@/Components/DropdownLink.vue';
 import NavLink from '@/Components/NavLink.vue';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
-import { Link } from '@inertiajs/inertia-vue3';
 
 const showingNavigationDropdown = ref(false);
 </script>
@@ -21,7 +19,7 @@ const showingNavigationDropdown = ref(false);
 
                             <!-- Navigation Links -->
                             <div class="hidden sm:-my-px sm:flex">
-                                <NavLink :href="route('dashboard')" :active="route().current('dashboard')">
+                                <NavLink :href="$page.props.auth.user.admin ? route('dashboardAdmin') : route('dashboard')" :active="route().current('dashboard') || route().current('dashboardAdmin')">
                                     Home
                                 </NavLink>
                             </div>
@@ -44,7 +42,7 @@ const showingNavigationDropdown = ref(false);
                                     </template>
 
                                     <template #content>
-                                        <DropdownLink :href="route('logout')" method="post" as="button">
+                                        <DropdownLink :href="$page.props.auth.user.admin ? route('logoutAdmin') : route('logout')" method="post" as="button">
                                             Log Out
                                         </DropdownLink>
                                     </template>

@@ -2,19 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreAdminRequest;
-use App\Http\Requests\UpdateAdminRequest;
 use App\Models\Admin;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Routing\Redirector;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 use Inertia\Response;
 
 class AdminController extends Controller
 {
 
-//    public function __construct()
-//    {
-//        $this->middleware('guest:admin');
-//    }
 
     /**
      * Display a listing of the resource.
@@ -29,66 +30,43 @@ class AdminController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return Response
+     * @param Request $request
+     * @return Application|Redirector|RedirectResponse
+     * @throws ValidationException
      */
-    public function create()
+    public function login(Request $request): Application|RedirectResponse|Redirector
     {
-        //
+        $credentials = $request->validate([
+            'email' => ['required', 'email'],
+            'password' => ['required'],
+        ]);
+
+        $Admin = Admin::where('email', $credentials['email'])->first();
+        if (isset($Admin)
+            && Hash::check(
+                $credentials['password'],
+                $Admin->password
+            )
+        ) {
+            auth('admin')->login($Admin);
+            $request->session()->regenerate();
+            return redirect(route('dashboardAdmin'));
+        }
+        throw ValidationException::withMessages([
+            'email' => trans('auth.failed'),
+        ]);
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Destroy an authenticated session.
      *
-     * @param StoreAdminRequest $request
-     * @return Response
+     * @param Request $request
+     * @return RedirectResponse
      */
-    public function store(StoreAdminRequest $request)
+    public function destroy(Request $request): RedirectResponse
     {
-        //
+        Auth::guard('admin')->logout();
+        return redirect('/admin/login');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param Admin $admin
-     * @return Response
-     */
-    public function show(Admin $admin)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param Admin $admin
-     * @return Response
-     */
-    public function edit(Admin $admin)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param UpdateAdminRequest $request
-     * @param Admin $admin
-     * @return Response
-     */
-    public function update(UpdateAdminRequest $request, Admin $admin)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param Admin $admin
-     * @return Response
-     */
-    public function destroy(Admin $admin)
-    {
-        //
-    }
 }

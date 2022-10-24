@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::middleware(['auth', 'verified'])->group(function () {
+Route::middleware(['auth:web', 'verified'])->group(function () {
 //    home page
     Route::get('/', [PostController::class, 'index'])->name('dashboard');
 
@@ -25,11 +25,24 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 });
 
-Route::middleware(['guest:admin'])->group(function () {
+
+//AdminPartition
+Route::middleware(['guest'])->group(function () {
     Route::prefix('/admin')->controller(AdminController::class)->group(function () {
         Route::get('/login', 'index')->name('adminLogin');
         Route::post('/login', 'login')->name('adminLoged');
     });
+});
+
+Route::middleware(['auth:admin'])->group(function () {
+    //    home page
+    Route::get('/admin', [PostController::class, 'indexAdmin'])->name('dashboardAdmin');
+
+//    Movies
+    Route::prefix('/admin/movie')->controller(PostController::class)->group(function () {
+        Route::get('/{movie}', 'AdminShowMovie')->name('movie');
+    });
+    Route::post('/logoutAdmin', [AdminController::class, 'destroy'])->name('logoutAdmin');
 });
 
 require __DIR__.'/auth.php';

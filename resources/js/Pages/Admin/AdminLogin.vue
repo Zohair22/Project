@@ -13,11 +13,10 @@ defineProps({
 const form = useForm({
     email: '',
     password: '',
-    remember: false
 });
 
 const submit = () => {
-    form.post(route('/admin/login'), {
+    form.post('/admin/login', {
         onFinish: () => form.reset('password'),
     });
 };

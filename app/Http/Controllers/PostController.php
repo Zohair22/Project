@@ -10,6 +10,8 @@ use Inertia\Response;
 
 class PostController extends Controller
 {
+
+//    User Partition
     /**
      * Display a listing of the resource.
      *
@@ -18,7 +20,36 @@ class PostController extends Controller
     public function index(): Response
     {
         $posts = Post::latest()->paginate(10);
-        return Inertia::render('Dashboard', compact('posts'));
+        return Inertia::render('Users/Dashboard', compact('posts'));
+    }
+
+    public function show(Post $post): Response
+    {
+        $post = str_replace('%20', ' ', $post);
+        $movie = Post::first();
+        return Inertia::render('Users/Movie', compact('movie'));
+    }
+
+
+
+    //    Admin Partition
+    /**
+     * Display a listing of the resource.
+     *
+     * @return Response
+     */
+    public function indexAdmin(): Response
+    {
+        $posts = Post::latest()->paginate(10);
+        return Inertia::render('Admin/Dashboard', compact('posts'));
+    }
+
+
+    public function AdminShowMovie(Post $post): Response
+    {
+        $post = str_replace('%20', ' ', $post);
+        $movie = Post::first();
+        return Inertia::render('Admin/Movie', compact('movie'));
     }
 
     /**
@@ -40,14 +71,6 @@ class PostController extends Controller
     public function store(StorePostRequest $request)
     {
         //
-    }
-
-
-    public function show(Post $post)
-    {
-        $post = str_replace('%20', ' ', $post);
-        $movie = Post::first();
-        return Inertia::render('Movie', compact('movie'));
     }
 
     /**
