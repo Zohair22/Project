@@ -5,13 +5,15 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
 use App\Models\Post;
+use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
 use Inertia\Response;
 
 class PostController extends Controller
 {
 
-//    User Partition
+//-------------- User Partition --------------//
+
     /**
      * Display a listing of the resource.
      *
@@ -23,16 +25,17 @@ class PostController extends Controller
         return Inertia::render('Users/Dashboard', compact('posts'));
     }
 
-    public function show(Post $post): Response
+    public function show($post): Response
     {
         $post = str_replace('%20', ' ', $post);
-        $movie = Post::first();
+        $movie = Post::where('title', $post)->first();
         return Inertia::render('Users/Movie', compact('movie'));
     }
 
 
 
-    //    Admin Partition
+//-------------- Admin Partition --------------//
+
     /**
      * Display a listing of the resource.
      *
@@ -40,15 +43,14 @@ class PostController extends Controller
      */
     public function indexAdmin(): Response
     {
-        $posts = Post::latest()->paginate(10);
+        $posts = Post::latest()->get();
         return Inertia::render('Admin/Dashboard', compact('posts'));
     }
 
-
-    public function AdminShowMovie(Post $post): Response
+    public function AdminShowMovie($post): Response
     {
         $post = str_replace('%20', ' ', $post);
-        $movie = Post::first();
+        $movie = Post::where('title', $post)->first();
         return Inertia::render('Admin/Movie', compact('movie'));
     }
 
@@ -65,7 +67,7 @@ class PostController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StorePostRequest  $request
+     * @param StorePostRequest $request
      * @return \Illuminate\Http\Response
      */
     public function store(StorePostRequest $request)
@@ -87,7 +89,7 @@ class PostController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdatePostRequest  $request
+     * @param UpdatePostRequest $request
      * @param Post $post
      * @return \Illuminate\Http\Response
      */
@@ -99,11 +101,15 @@ class PostController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param Post $post
-     * @return \Illuminate\Http\Response
+     * @param  $post
+     * @return RedirectResponse
      */
-    public function destroy(Post $post)
+    public function destroy($post): RedirectResponse
     {
-        //
+        $post = str_replace('%20', ' ', $post);
+        $movie = Post::where('title', $post)->first();
+        $movie->delete();
+        return back();
     }
+
 }

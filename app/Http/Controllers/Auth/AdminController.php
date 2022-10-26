@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Auth;
 
+use App\Http\Controllers\Controller;
 use App\Models\Admin;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Http\RedirectResponse;
@@ -16,6 +17,10 @@ use Inertia\Response;
 class AdminController extends Controller
 {
 
+    public function __construct()
+    {
+        $this->middleware('guest:admin')->except('logout');
+    }
 
     /**
      * Display a listing of the resource.
@@ -24,6 +29,7 @@ class AdminController extends Controller
      */
     public function index(): Response
     {
+        $this->middleware('guest:admin');
         return Inertia::render('Admin/AdminLogin');
     }
 
@@ -36,6 +42,7 @@ class AdminController extends Controller
      */
     public function login(Request $request): Application|RedirectResponse|Redirector
     {
+        $this->middleware('guest:admin');
         $credentials = $request->validate([
             'email' => ['required', 'email'],
             'password' => ['required'],
