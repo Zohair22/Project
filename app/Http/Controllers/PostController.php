@@ -21,7 +21,7 @@ class PostController extends Controller
      */
     public function index(): Response
     {
-        $posts = Post::latest()->paginate(10);
+        $posts = Post::latest()->get();
         return Inertia::render('Users/Dashboard', compact('posts'));
     }
 

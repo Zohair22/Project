@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
 Route::middleware('auth:web')->group(function () {
 //    home page
     Route::get('/', [PostController::class, 'index'])->name('dashboard');
