@@ -15,6 +15,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+require __DIR__.'/auth.php';
+
 Route::middleware('auth:web')->group(function () {
 //    home page
     Route::get('/', [PostController::class, 'index'])->name('dashboard');
@@ -49,4 +51,3 @@ Route::middleware('auth:admin')->group(function () {
     Route::post('/logoutAdmin', [AdminController::class, 'destroy'])->name('logoutAdmin');
 });
 
-require __DIR__.'/auth.php';
